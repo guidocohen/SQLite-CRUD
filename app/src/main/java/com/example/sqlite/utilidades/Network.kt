@@ -15,55 +15,54 @@ class Network(private var activity: AppCompatActivity) {
     init {
     }
 
-    fun hayRed(): Boolean{
-        val connectivityManager = activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    fun hayRed(): Boolean {
+        val connectivityManager =
+            activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
 
         return networkInfo != null && networkInfo.isConnected
     }
 
-    fun httpRequest(context: Context, url:String, httpResponse: HttpResponse){
-        if(hayRed()){
+    fun httpRequest(context: Context, url: String, httpResponse: HttpResponse) {
+        if (hayRed()) {
             val queue = Volley.newRequestQueue(context)
 
-            val solicitud = StringRequest(Request.Method.GET, url, Response.Listener<String>{
+            val solicitud =
+                StringRequest(Request.Method.GET, url, Response.Listener<String> {
+                        response ->
+                    httpResponse.httpResponseSuccess(response)
 
-                response ->
+                }, Response.ErrorListener { error ->
 
-                httpResponse.httpResponseSuccess(response)
-
-            }, Response.ErrorListener {
-                error ->
-
-                Log.d("HTTP_REQUEST", error.message.toString())
-
-                //Mensaje.mensajeError(context, Errores.HTTP_ERROR)
-            })
+                    Log.d("HTTP_REQUEST", error.message.toString())
+                    httpResponse.httpErrorResponse(error.message.toString())
+                    //Mensaje.mensajeError(context, Errores.HTTP_ERROR)
+                })
             queue.add(solicitud)
-        }else{
+        } else {
             //Mensaje.mensajeError(context, Errores.NO_HAY_RED)
+            Log.d("Conection", "Conection error")
         }
     }
 
-    fun httpPOSTRequest(context: Context, url:String, httpResponse: HttpResponse){
-        if(hayRed()){
+    fun httpPOSTRequest(context: Context, url: String, httpResponse: HttpResponse) {
+        if (hayRed()) {
             val queue = Volley.newRequestQueue(context)
 
-            val solicitud = StringRequest(Request.Method.POST, url, Response.Listener<String>{
+            val solicitud = StringRequest(Request.Method.POST, url, Response.Listener<String> {
 
-                response ->
+                    response ->
 
                 httpResponse.httpResponseSuccess(response)
 
-            }, Response.ErrorListener {
-                error ->
+            }, Response.ErrorListener { error ->
 
                 Log.d("HTTP_REQUEST", error.message.toString())
 
                 //Mensaje.mensajeError(context, Errores.HTTP_ERROR)
             })
             queue.add(solicitud)
-        }else{
+        } else {
             //Mensaje.mensajeError(context, Errores.NO_HAY_RED)
         }
     }
