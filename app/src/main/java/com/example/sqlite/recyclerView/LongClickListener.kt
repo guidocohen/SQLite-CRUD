@@ -1,4 +1,4 @@
-package com.example.sqlite.RecyclerView
+package com.example.sqlite.recyclerView
 
 import android.view.View
 

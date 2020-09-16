@@ -1,4 +1,4 @@
-package com.example.sqlite.Modelo
+package com.example.sqlite.modelo
 
 class Alumno(var id: String, var nombre: String) {
 }

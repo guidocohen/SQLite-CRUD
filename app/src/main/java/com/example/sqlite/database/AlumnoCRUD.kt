@@ -1,8 +1,8 @@
-package com.example.sqlite.SQLite
+package com.example.sqlite.database
 
 import android.content.ContentValues
 import android.content.Context
-import com.example.sqlite.Modelo.Alumno
+import com.example.sqlite.modelo.Alumno
 
 class AlumnoCRUD(context: Context) {
     private var helper = DataBaseHelper(context)

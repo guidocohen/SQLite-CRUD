@@ -1,10 +1,10 @@
-package com.example.sqlite.RecyclerView
+package com.example.sqlite.recyclerView
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sqlite.Modelo.Alumno
+import com.example.sqlite.modelo.Alumno
 import com.example.sqlite.R
 import kotlinx.android.synthetic.main.template_alumno.view.*
 
