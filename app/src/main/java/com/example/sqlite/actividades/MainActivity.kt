@@ -1,20 +1,19 @@
 package com.example.sqlite.actividades
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.sqlite.*
+import com.example.sqlite.R
+import com.example.sqlite.database.AlumnoCRUD
 import com.example.sqlite.modelo.Alumno
+import com.example.sqlite.modelo.Alumnos
 import com.example.sqlite.recyclerView.AdaptadorCustom
 import com.example.sqlite.recyclerView.ClickListener
 import com.example.sqlite.recyclerView.LongClickListener
-import com.example.sqlite.database.AlumnoCRUD
-import com.example.sqlite.modelo.Alumnos
 import com.example.sqlite.utilidades.HttpResponse
 import com.example.sqlite.utilidades.Network
 import com.google.gson.Gson
@@ -37,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val network = Network(this)
-        val activity = applicationContext
+        val activity = this.applicationContext
         val gson = Gson()
 
         crud = AlumnoCRUD(this)
@@ -49,26 +48,24 @@ class MainActivity : AppCompatActivity() {
             object : HttpResponse {
                 override fun httpResponseSuccess(response: String) {
                     Log.d("response", response)
+                    Toast.makeText(activity, "Solicitud HTTP exitosa", Toast.LENGTH_SHORT)
+                        .show()
 
                     val alumnosAPI = gson.fromJson(response, Alumnos::class.java).items
 
                     alumnos.forEach { crud.deleteAlumno(it) }
                     alumnosAPI.forEach { crud.newAlumno(Alumno(it.id, it.nombre)) }
 
-                    /*for (alumno in alumnos) {
-                        crud.deleteAlumno(alumno)
-                    }*/
-                    /*for (alumno in alumnosAPI) {
-                        crud.newAlumno(Alumno(alumno.id, alumno.nombre))
-                    }*/
-
                     alumnos = crud.getAlumnos()
                     configurarAdaptador(alumnos)
                 }
 
                 override fun httpErrorResponse(response: String) {
-                    Toast.makeText(activity, "Error al hacer la solicitud HTTP", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(
+                        activity, "Error al hacer la solicitud HTTP",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    configurarAdaptador(alumnos)
                 }
             })
     }
